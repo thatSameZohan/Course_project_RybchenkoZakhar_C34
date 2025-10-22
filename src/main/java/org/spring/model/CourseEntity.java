@@ -3,7 +3,6 @@ package org.spring.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
-import org.mapstruct.Mapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +23,13 @@ public class CourseEntity {
 
     private String description;
 
-    @ManyToMany(mappedBy = "courses", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @ToString.Exclude
-    List<PersonEntity> persons=new ArrayList<>();
+    private List<LessonEntity> lessons=new ArrayList<>();
+
+    @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<PersonEntity> persons=new ArrayList<>();
 
     public CourseEntity(String name, String description) {
         this.name = name;
@@ -37,5 +40,4 @@ public class CourseEntity {
         String var10000 = String.valueOf(this.getId());
         return "курс: " + this.getName();
     }
-
 }

@@ -51,33 +51,45 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     @Override
     public void block(String username) {
-        PersonEntity entity = repo.findByUsername(username).orElseThrow();
-        if (!entity.isEnabled()){
-            entity.setEnabled(true);
-        } else {
-            entity.setEnabled(false);
+        PersonEntity entity = repo.findByUsername(username).orElse(null);
+        if(entity!=null){
+            if (!entity.isEnabled()){
+                entity.setEnabled(true);
+            } else {
+                entity.setEnabled(false);
+            }
+            repo.save(entity);
         }
-        repo.save(entity);
     }
 
     @Override
     public void delete(String username) {
-        PersonEntity entity = repo.findByUsername(username).orElseThrow();
-        repo.delete(entity);
+        PersonEntity entity = repo.findByUsername(username).orElse(null);
+        if(entity!=null){
+            repo.delete(entity);
+        }
     }
 
     @Override
     public void addCourse(String username, String courseName) {
-        PersonEntity entity = repo.findByUsername(username).orElseThrow();
-        entity.addCourse(courseRepo.findByName(courseName).orElseThrow());
-        repo.save(entity);
+        var personEntity = repo.findByUsername(username).orElse(null);
+        var courseEntity = courseRepo.findByName(courseName).orElseThrow();
+        if (personEntity != null) {
+            if (!personEntity.getCourses().contains(courseEntity)) {
+                personEntity.getCourses().add(courseEntity);
+                courseEntity.getPersons().add(personEntity);
+                repo.save(personEntity);
+            }
+        }
     }
 
     @Override
     public void deleteCourse(String username, String courseName) {
-        PersonEntity entity = repo.findByUsername(username).orElseThrow();
+        PersonEntity entity = repo.findByUsername(username).orElse(null);
+        if (entity != null) {
         entity.getCourses().remove(courseRepo.findByName(courseName).orElseThrow());
         repo.save(entity);
+        }
     }
 
     @Override
@@ -85,7 +97,6 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         List<PersonEntity> entities = repo.findAll();
         return entities;
     }
-
 
     @Override
     public List<PersonEntity> findByCriteria(PersonSearchDto dto) {
@@ -101,7 +112,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
                 predicates.add(builder.equal(root.get("username"), dto.getUsername()));
             }
             if(StringUtils.isNoneBlank(dto.getAuthority())){
-                predicates.add(builder.like(root.get("authority"), dto.getAuthority()));
+                predicates.add(builder.like(root.get("authority"), "%"+dto.getAuthority()+"%"));
             }
             return builder.and(predicates.toArray(new Predicate[]{}));
         };

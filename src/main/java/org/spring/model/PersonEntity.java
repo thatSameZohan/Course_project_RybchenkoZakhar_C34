@@ -34,9 +34,9 @@ public class PersonEntity implements UserDetails {
     @JoinTable(name = "persons_courses_join", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
     List<CourseEntity> courses=new ArrayList<>();
 
-    public void addCourse(CourseEntity course) {
-        courses.add(course);
-        course.getPersons().add(this);
+    public PersonEntity(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     @Override

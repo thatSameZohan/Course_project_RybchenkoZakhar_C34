@@ -1,6 +1,5 @@
 package org.spring.dto;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -23,6 +22,4 @@ public class PersonDto {
     private boolean isEnabled;
     @ToString.Exclude
     private List<CourseDto> courses;
-
-
 }

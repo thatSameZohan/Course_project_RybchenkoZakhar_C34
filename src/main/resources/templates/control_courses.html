@@ -19,6 +19,17 @@
     <button type="submit" class="btn btn-outline-success mb-3">Создать курс</button>
 </form><br>
 
+    <form th:action="@{/control/courses/addlesson}" method="post">
+        Добавить занятие<br><br>
+        <select name="courseName" class="form-select" aria-label="Default select example" >
+            <option selected>выбрать курс</option>
+            <option th:each="course : ${courses}"><p th:text="${course.getName()}"/></option>
+        </select>
+        номер занятия <input type="number" name="number"><br>
+        название занятия <input type="text" name="name"><br>
+        <button type="submit" class="btn btn-outline-success mb-3">Добавить занятие</button>
+    </form><br>
+
 <form th:action="@{/control/courses/search}" method="get">
     Поиск<br>
     по имени <input type="text" name="name"><br>
@@ -36,7 +47,8 @@
     <li th:each="course : ${courses}">
         <p th:text=
         "${course.getName()}+ ' : '
-        +${course.getDescription()}"/>
+        +${course.getDescription()}+ ' : '
+        +${course.getLessons()}"/>
     </li>
 </ul><br>
 
