@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    username: postgres
+    password: 5784
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/course_db
+server:
+  port: 8080
