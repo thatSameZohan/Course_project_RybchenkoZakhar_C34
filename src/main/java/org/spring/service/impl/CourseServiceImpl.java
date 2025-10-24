@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.spring.dto.CourseDto;
 import org.spring.dto.CourseSearchDto;
 import org.spring.mapper.CourseMapper;
-import org.spring.mapper.PersonMapper;
 import org.spring.model.CourseEntity;
 import org.spring.repository.CourseRepository;
 import org.spring.service.CourseService;
@@ -14,8 +13,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.List;;
 
 @Service
 @RequiredArgsConstructor
@@ -26,14 +24,18 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void save(CourseDto dto) {
-        CourseEntity courseEntity = mapper.toCourseEntity(dto);
-        repo.save(courseEntity);
+        var courseEntity = mapper.toCourseEntity(dto);
+        if(repo.findByName(dto.getName()).isEmpty()) {
+            repo.save(courseEntity);
+        }
     }
 
     @Override
     public void delete(String name) {
-        var byName=repo.findByName(name).orElseThrow();
-        repo.delete(byName);
+        var byName=repo.findByName(name).orElse(null);
+        if(byName!=null){
+            repo.delete(byName);
+        }
     }
 
     @Override

@@ -11,14 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
 @RequiredArgsConstructor
 @RequestMapping("/personal")
 @Controller
 public class PersonalController {
 
     private final CourseRepository courseRepo;
-
 
     @GetMapping
     public String personalPage(HttpSession session, Model model){
@@ -32,11 +30,9 @@ public class PersonalController {
 
     @GetMapping("/lessons/{name}")
     public String lessonsPage(@PathVariable String name, Model model){
-        model.addAttribute("course",courseRepo.findByName(name));
+        var courseEntity=courseRepo.findByName(name).orElseThrow();
+        model.addAttribute("course",courseEntity);
+        model.addAttribute("lessons", courseEntity.getLessons());
         return "lessons.html";
     }
-
-
-
-
 }

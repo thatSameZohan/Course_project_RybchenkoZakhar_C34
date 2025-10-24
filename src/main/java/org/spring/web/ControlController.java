@@ -2,20 +2,14 @@ package org.spring.web;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.spring.dto.CourseDto;
-import org.spring.dto.CourseSearchDto;
-import org.spring.dto.PersonDto;
-import org.spring.dto.PersonSearchDto;
-import org.spring.model.CourseEntity;
+import org.spring.dto.*;
 import org.spring.service.CourseService;
+import org.spring.service.LessonService;
 import org.spring.service.PersonService;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/control")
@@ -24,6 +18,7 @@ public class ControlController {
 
     private final PersonService personService;
     private final CourseService courseService;
+    private final LessonService lessonService;
 
     @GetMapping
     public String home(Model model) {
@@ -125,8 +120,12 @@ public class ControlController {
         return "control_courses.html";
     }
 
-
-
-
-
+    @PostMapping("/courses/addlesson")
+    public String addLessonToCourse(@ModelAttribute(name = "course")CourseDto dto,
+                                    String courseName,
+                                    LessonDto lessonDto, Model model) {
+        lessonService.saveLesson(courseName, lessonDto);
+        model.addAttribute("courses", courseService.findAll());
+        return "control_courses.html";
+    }
 }
