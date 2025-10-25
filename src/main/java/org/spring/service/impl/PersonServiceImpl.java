@@ -46,7 +46,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
             checkUsername = person.getUsername().equals(dto.getUsername());
         }
         if(!checkUsername){
-            dto.setPassword(config.passwordEncoder().encode(dto.getPassword()));;
+            dto.setPassword(config.passwordEncoder().encode(dto.getPassword()));
             var entity = mapper.toPersonEntity(dto);
             entity.setAuthority("read");
             entity.setEnabled(true);
@@ -99,15 +99,13 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     @Override
     public List<PersonEntity> findAll() {
-        List<PersonEntity> entities = repo.findAll();
-        return entities;
+        return repo.findAll();
     }
 
     @Override
     public List<PersonEntity> findByCriteria(PersonSearchDto dto) {
         Specification<PersonEntity> specification = createSpecification(dto);
-        List<PersonEntity> result = repo.findAll(specification);
-        return result;
+        return repo.findAll(specification);
     }
 
     private Specification<PersonEntity> createSpecification(PersonSearchDto dto) {
