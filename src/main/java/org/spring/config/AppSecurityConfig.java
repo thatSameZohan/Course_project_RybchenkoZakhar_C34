@@ -32,7 +32,7 @@ public class AppSecurityConfig {
                             .loginProcessingUrl("/cust-login")
                             .loginPage("/ingoing")
                             .failureHandler((req, resp, exc) ->{
-                                req.setAttribute("error", "invalid login or password");
+                                req.setAttribute("message", "Неверный логин или пароль");
                                 req.getRequestDispatcher("/error").forward(req, resp);
                             } );
                 })

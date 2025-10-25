@@ -6,13 +6,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.spring.config.AppSecurityConfig;
 import org.spring.dto.PersonDto;
 import org.spring.dto.PersonSearchDto;
-import org.spring.mapper.CourseMapper;
+import org.spring.exc.PersonAlreadyExistException;
 import org.spring.mapper.PersonMapper;
-import org.spring.model.CourseEntity;
 import org.spring.model.PersonEntity;
 import org.spring.repository.CourseRepository;
 import org.spring.repository.PersonRepository;
-import org.spring.service.CourseService;
 import org.spring.service.PersonService;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +28,6 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     private final PersonRepository repo;
     private final CourseRepository courseRepo;
     private final PersonMapper mapper;
-    private final CourseMapper courseMapper;
     private final AppSecurityConfig config;
 
     @Override
@@ -42,11 +38,20 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     @Override
     public void save(PersonDto dto) {
-        dto.setPassword(config.passwordEncoder().encode(dto.getPassword()));;
-        var entity = mapper.toPersonEntity(dto);
-        entity.setAuthority("read");
-        entity.setEnabled(true);
-        repo.save(entity);
+        boolean checkUsername = false;
+        for(PersonEntity person : repo.findAll()){
+            if(checkUsername){
+                break;
+            }
+            checkUsername = person.getUsername().equals(dto.getUsername());
+        }
+        if(!checkUsername){
+            dto.setPassword(config.passwordEncoder().encode(dto.getPassword()));
+            var entity = mapper.toPersonEntity(dto);
+            entity.setAuthority("read");
+            entity.setEnabled(true);
+            repo.save(entity);
+        } else throw new PersonAlreadyExistException();
     }
 
     @Override
@@ -94,15 +99,13 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     @Override
     public List<PersonEntity> findAll() {
-        List<PersonEntity> entities = repo.findAll();
-        return entities;
+        return repo.findAll();
     }
 
     @Override
     public List<PersonEntity> findByCriteria(PersonSearchDto dto) {
         Specification<PersonEntity> specification = createSpecification(dto);
-        List<PersonEntity> result = repo.findAll(specification);
-        return result;
+        return repo.findAll(specification);
     }
 
     private Specification<PersonEntity> createSpecification(PersonSearchDto dto) {
