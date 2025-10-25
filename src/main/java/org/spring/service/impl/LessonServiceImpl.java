@@ -3,18 +3,14 @@ package org.spring.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.spring.dto.LessonDto;
 import org.spring.mapper.LessonMapper;
-import org.spring.model.CourseEntity;
 import org.spring.model.LessonEntity;
-import org.spring.model.PersonEntity;
 import org.spring.repository.CourseRepository;
-import org.spring.repository.LessonRepository;
 import org.spring.service.LessonService;
 import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class LessonServiceImpl implements LessonService {
 
-    private final LessonRepository lessonRepo;
     private final CourseRepository courseRepo;
     private final LessonMapper lessonMapper;
 
