@@ -7,6 +7,7 @@ import org.spring.model.LessonEntity;
 import org.spring.repository.CourseRepository;
 import org.spring.service.LessonService;
 import org.springframework.stereotype.Service;
+
 @RequiredArgsConstructor
 @Service
 public class LessonServiceImpl implements LessonService {

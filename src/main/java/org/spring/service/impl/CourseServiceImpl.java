@@ -13,7 +13,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -40,22 +40,20 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<CourseEntity> findAll() {
-        var entities = repo.findAll();
-        return entities;
+        return repo.findAll();
     }
 
     @Override
     public List<CourseEntity> findByCriteria(CourseSearchDto dto) {
         Specification<CourseEntity> specification = createSpecification(dto);
-        List<CourseEntity> result = repo.findAll(specification);
-        return result;
+        return repo.findAll(specification);
     }
 
     private Specification<CourseEntity> createSpecification(CourseSearchDto dto) {
         return (root, query, builder) ->{
             List<Predicate> predicates = new ArrayList<>();
             if(StringUtils.isNoneBlank(dto.getName())){
-                predicates.add(builder.equal(root.get("name"), dto.getName()));
+                predicates.add(builder.like(root.get("name"), "%"+dto.getName()+"%"));
             }
             if(StringUtils.isNoneBlank(dto.getDescription())){
                 predicates.add(builder.like(root.get("description"), "%"+dto.getDescription()+"%"));

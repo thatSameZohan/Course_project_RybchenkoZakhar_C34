@@ -37,7 +37,6 @@ public class CourseEntity {
     }
 
     public String toString() {
-        String var10000 = String.valueOf(this.getId());
         return "курс: " + this.getName();
     }
 }

@@ -30,13 +30,7 @@ public class LessonEntity {
     @ToStringExclude
     private CourseEntity course;
 
-    public LessonEntity(Integer number,String name) {
-        this.number=number;
-        this.name = name;
-    }
-
     public String toString() {
-        String var10000 = String.valueOf(this.getId());
         return "занятие " + this.getNumber()+ ": " + this.getName();
     }
 }

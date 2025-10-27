@@ -2,8 +2,6 @@ package org.spring.service;
 
 import org.spring.dto.CourseDto;
 import org.spring.dto.CourseSearchDto;
-import org.spring.dto.PersonDto;
-import org.spring.dto.PersonSearchDto;
 import org.spring.model.CourseEntity;
 
 import java.util.List;

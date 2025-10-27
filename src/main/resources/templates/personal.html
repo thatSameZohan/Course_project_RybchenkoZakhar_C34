@@ -6,19 +6,26 @@
     <title>Личный кабинет</title>
 </head>
 <body>
-<svg class="bi ms-auto d-none" aria-hidden="true"><use href="#check2"></use></svg> </button>
-</li> </ul> </div>  <svg xmlns="http://www.w3.org/2000/svg" class="d-none"> <symbol id="house-door-fill" viewBox="0 0 16 16"> <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5z"></path> </symbol> </svg> <div class="container my-5"> <nav aria-label="breadcrumb"> <ol class="breadcrumb p-3 bg-body-tertiary rounded-3"> <li class="breadcrumb-item">
-    <a href="/">Главная</a></li> <li class="breadcrumb-item">
-    Личный кабинет<br>
 
-    <p th:text="'Пользователь: '+${username}"/>
+<div class="container bg-body-tertiary rounded-3 my-5 p-4">
+    <div class="row">
+        <div class="col-11">
+            <nav aria-label="breadcrumb ">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                    <li class="breadcrumb-item active me-2" aria-current="page">Личный кабинет :</li>
+                    <p th:text="${username}"/>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-1" th:insert="~{part/parts :: logout}"></div>
+    </div>
 
-    Мои курсы<br><br>
+    <H3>Мои курсы</H3>
 
     <div class="row">
-        <div th:each="course : ${courses}" class="col-sm-6 mb-3 mb-sm-0">
-            <div  class="card" style="width: 18rem;">
-                <!--        <img src="..." class="card-img-top" alt="...">-->
+        <div th:each="course : ${courses}" class="col-3 m-3">
+            <div  class="card" style="width: 100%;">
                 <div class="card-body">
                     <h5 class="card-title"><p th:text="${course.getName()}"/></h5>
                     <p class="card-text"><p th:text="${course.getDescription()}"/></p>
@@ -26,9 +33,10 @@
                 </div>
             </div>
         </div>
-    </div><br>
+    </div>
 
-    <div th:insert="~{part/parts :: logout}"></div>
+</div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 </html>
