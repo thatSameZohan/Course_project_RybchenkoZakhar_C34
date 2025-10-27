@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.spring.config.AppSecurityConfig;
 import org.spring.dto.PersonDto;
 import org.spring.dto.PersonSearchDto;
-import org.spring.exc.PersonAlreadyExistException;
+import org.spring.exc.AlreadyExistException;
 import org.spring.mapper.PersonMapper;
 import org.spring.model.PersonEntity;
 import org.spring.repository.CourseRepository;
@@ -51,7 +51,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
             entity.setAuthority("read");
             entity.setEnabled(true);
             repo.save(entity);
-        } else throw new PersonAlreadyExistException();
+        } else throw new AlreadyExistException("Такой пользователь уже существует.");
     }
 
     @Override
@@ -78,8 +78,8 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Override
     public void addCourse(String username, String courseName) {
         var personEntity = repo.findByUsername(username).orElse(null);
-        var courseEntity = courseRepo.findByName(courseName).orElseThrow();
-        if (personEntity != null) {
+        var courseEntity = courseRepo.findByName(courseName).orElse(null);
+        if (personEntity != null&&courseEntity!=null) {
             if (!personEntity.getCourses().contains(courseEntity)) {
                 personEntity.getCourses().add(courseEntity);
                 courseEntity.getPersons().add(personEntity);
@@ -90,9 +90,10 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     @Override
     public void deleteCourse(String username, String courseName) {
-        PersonEntity entity = repo.findByUsername(username).orElse(null);
-        if (entity != null) {
-        entity.getCourses().remove(courseRepo.findByName(courseName).orElseThrow());
+        var entity = repo.findByUsername(username).orElse(null);
+        var courseEntity = courseRepo.findByName(courseName).orElse(null);
+        if (entity != null&&courseEntity!=null) {
+        entity.getCourses().remove(courseEntity);
         repo.save(entity);
         }
     }
@@ -112,7 +113,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         return (root, query, builder) ->{
             List<Predicate> predicates = new ArrayList<>();
             if(StringUtils.isNoneBlank(dto.getUsername())){
-                predicates.add(builder.equal(root.get("username"), dto.getUsername()));
+                predicates.add(builder.like(root.get("username"), "%"+dto.getUsername()+"%"));
             }
             if(StringUtils.isNoneBlank(dto.getAuthority())){
                 predicates.add(builder.like(root.get("authority"), "%"+dto.getAuthority()+"%"));

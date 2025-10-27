@@ -18,4 +18,6 @@ public class CourseDto {
     private String description;
     @ToString.Exclude
     private List<PersonDto> persons;
+    @ToString.Exclude
+    private List<LessonDto> lessons;
 }

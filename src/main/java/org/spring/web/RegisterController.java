@@ -28,12 +28,11 @@ public class RegisterController {
     @PostMapping
     public String saveUser(
             @Valid @ModelAttribute(name = "person") PersonDto dto,
-            BindingResult bindingResult,
-            Model model) {
+            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "register.html";
-        };
+        }
         service.save(dto);
-        return "home.html";
+        return "login.html";
     }
 }

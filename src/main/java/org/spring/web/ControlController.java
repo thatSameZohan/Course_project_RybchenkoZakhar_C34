@@ -4,12 +4,15 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.spring.dto.*;
 import org.spring.service.CourseService;
+import org.spring.service.LeadService;
 import org.spring.service.LessonService;
 import org.spring.service.PersonService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RequestMapping("/control")
@@ -19,9 +22,11 @@ public class ControlController {
     private final PersonService personService;
     private final CourseService courseService;
     private final LessonService lessonService;
+    private final LeadService leadService;
 
     @GetMapping
     public String home(Model model) {
+        model.addAttribute("leads", leadService.findAll());
         return "control.html";
     }
 
@@ -38,6 +43,7 @@ public class ControlController {
             Model model) {
         var result=personService.findByCriteria(searchDto);
         model.addAttribute("persons", result);
+        model.addAttribute("courses", courseService.findAll());
         return "control_users.html";
     }
 
@@ -46,6 +52,7 @@ public class ControlController {
             PersonSearchDto searchDto,
             Model model) {
         personService.delete(searchDto.getUsername());
+        model.addAttribute("courses", courseService.findAll());
         model.addAttribute("persons", personService.findAll());
         return "control_users.html";
     }
@@ -55,14 +62,14 @@ public class ControlController {
             Model model) {
         personService.block(searchDto.getUsername());
         model.addAttribute("persons", personService.findAll());
+        model.addAttribute("courses", courseService.findAll());
         return "control_users.html";
     }
 
     @PostMapping("/users/addcourse")
     public String addCourseToPerson(PersonSearchDto personSearchDto,
                                     Model model,
-                                    CourseSearchDto courseSearchDto,
-                                    Model coursesModel) {
+                                    CourseSearchDto courseSearchDto) {
         personService.addCourse(personSearchDto.getUsername(),courseSearchDto.getName());
         model.addAttribute("persons", personService.findAll());
         model.addAttribute("courses", courseService.findAll());
@@ -72,8 +79,7 @@ public class ControlController {
     @PostMapping("/users/deletecourse")
     public String deleteCourseFromPerson(PersonSearchDto personSearchDto,
                                     Model model,
-                                    CourseSearchDto courseSearchDto,
-                                    Model coursesModel) {
+                                    CourseSearchDto courseSearchDto) {
         personService.deleteCourse(personSearchDto.getUsername(),courseSearchDto.getName());
         model.addAttribute("persons", personService.findAll());
         model.addAttribute("courses", courseService.findAll());
@@ -127,5 +133,18 @@ public class ControlController {
         lessonService.saveLesson(courseName, lessonDto);
         model.addAttribute("courses", courseService.findAll());
         return "control_courses.html";
+    }
+
+    @GetMapping("/leads")
+    public String leads(Model model) {
+        model.addAttribute("leads",leadService.findAll());
+        return "control_leads.html";
+    }
+
+    @PostMapping("/leads/delete")
+    public String deleteLead(String id, Model model) {
+        leadService.delete(UUID.fromString(id));
+        model.addAttribute("leads",leadService.findAll());
+        return "control_leads.html";
     }
 }

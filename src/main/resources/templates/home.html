@@ -3,21 +3,33 @@
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <meta charset="UTF-8">
-    <title>Фитнес</title>
+    <title>PROFit</title>
 </head>
 <body>
 
-<svg class="bi ms-auto d-none" aria-hidden="true"><use href="#check2"></use></svg> </button>
-</li> </ul> </div>  <svg xmlns="http://www.w3.org/2000/svg" class="d-none"> <symbol id="house-door-fill" viewBox="0 0 16 16"> <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5z"></path> </symbol> </svg> <div class="container my-5"> <nav aria-label="breadcrumb"> <ol class="breadcrumb p-3 bg-body-tertiary rounded-3"> <li class="breadcrumb-item">
-    <h4>ФИТНЕС КУРСЫ</h4><br>
+<div th:insert="~{part/parts :: nav}"></div>
 
-<a href="/register">РЕГИСТРАЦИЯ</a><br>
-<a href="/ingoing">ВОЙТИ</a><br>
-<a href="/courses">ВСЕ КУРСЫ</a><br>
-<a href="/personal">ЛИЧНЫЙ КАБИНЕТ</a><br>
-<a href="/control">ПАНЕЛЬ УПРАВЛЕНИЯ</a><br><br>
+<div class="row">
+    <div class="col-7">
+        <h1 class="mt-5 ms-5">Превратите мечту о фигуре <br> в реальность</h1>
+        <h4 class="mt-5 ms-5">Профессиональные фитнес-программы <br>для любого уровня подготовки</h4>
+    </div>
+    <div class="col-4 mt-5">
+            <div class="card p-5" style="width: 25rem;background-color:#acdeff" >
+                <form th:action="@{/lead}" method="post" th:object="${lead}">
+                    <h4>Поможем подобрать курс</h4>
+                    <input class="form-control mt-4" type="text" placeholder="Имя" th:field="*{name}"><p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                    <input class="form-control mt-4" type="text" placeholder="email" th:field="*{email}"><p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                    <input class="form-control mt-4" type="text" placeholder="Номер телефона (9 цифр) +375..." th:field="*{phone}"><p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
+                    <div class="d-grid  mx-auto">
+                        <button type="submit" class="btn btn-secondary mt-4">Хочу заниматься</button>
+                    </div>
 
-<div th:insert="~{part/parts :: logout}"></div>
+                </form>
+            </div>
+    </div>
+    <div class="col-1"></div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>

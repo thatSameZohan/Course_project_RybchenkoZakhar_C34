@@ -34,11 +34,6 @@ public class PersonEntity implements UserDetails {
     @JoinTable(name = "persons_courses_join", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
     List<CourseEntity> courses=new ArrayList<>();
 
-    public PersonEntity(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(authority==null||authority.isBlank()){
