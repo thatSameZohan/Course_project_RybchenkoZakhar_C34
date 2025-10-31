@@ -22,8 +22,8 @@ public class AppSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(registry->
         {
-            registry.requestMatchers("/","/courses**","/courses/search","/register","/ingoing","/error","/lead").permitAll()
-                    .requestMatchers("/personal/**").hasAuthority("read")
+            registry.requestMatchers("/","/courses/**","/courses/search","/register","/ingoing","/error","/lead").permitAll()
+                    .requestMatchers("/personal/**","/buy").hasAuthority("read")
                     .requestMatchers("/control","/control/**").hasAuthority("write");
         })
                 .formLogin(custom -> {

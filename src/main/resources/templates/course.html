@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "http://www.thymeleaf.org">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>О курсе</title>
+</head>
+<body>
+<div class="container bg-body-tertiary rounded-3 my-5 p-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="/courses">Назад</a></li>
+            <li class="breadcrumb-item active" aria-current="page">О курсе</li>
+        </ol>
+    </nav>
+    <div>
+        <h4><p th:text="${course.getName()}"/></h4>
+        <p class="card-text"><p th:text="${course.getDescription()}"/></p>
+        <form th:action="@{/buy}" method="post">
+            <button type="submit" name="name" th:value="${course.getName()}" class="btn btn-outline-primary mb-3">Купить</button>
+        </form>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>

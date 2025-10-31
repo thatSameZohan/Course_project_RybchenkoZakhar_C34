@@ -19,16 +19,17 @@
                 </nav>
 
                 <form class="mx-5" th:action="@{/cust-login}" method="post">
-                    <div class="m-1">
+                    <div class="mt-1">
                         <label class="form-label">Логин</label>
                         <input class="form-control" type="text" name="login">
                     </div>
-                    <div class="m-1">
+                    <div class="mt-1">
                         <label class="form-label">Пароль</label>
                         <input class="form-control" type="password" name="password">
                     </div>
                     <button type="submit" class="btn btn-outline-secondary m-1 mt-2">Войти</button>
                 </form>
+                <div class="mt-2 mx-5">Еще нет аккаунта? <a href="/register">Зарегистрироваться</a></div>
             </div>
         </div>
         <div class="col-4"></div>

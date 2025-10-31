@@ -84,7 +84,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
                 personEntity.getCourses().add(courseEntity);
                 courseEntity.getPersons().add(personEntity);
                 repo.save(personEntity);
-            }
+            } else throw new AlreadyExistException("У пользователя уже есть этот курс.");
         }
     }
 
