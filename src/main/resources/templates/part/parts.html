@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th = "http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <form th:fragment="logout" th:action="@{/cust-logout}" method="post">
     <button type="submit" class="btn btn-outline-primary mb-3">Выйти</button>
@@ -19,13 +19,13 @@
                 <a class="nav-link" href="/register">Регистрация</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="/ingoing">Войти</a>
+            </li>
+            <li sec:authorize="hasAuthority('read')" class="nav-item">
                 <a class="nav-link" href="/personal">Личный кабинет</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="/">Контакты</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/control">Панель управления</a>
+            <li sec:authorize="hasAuthority('write')" class="nav-item">
+                    <a class="nav-link" href="/control">Панель управления</a>
             </li>
         </ul>
     </div>
